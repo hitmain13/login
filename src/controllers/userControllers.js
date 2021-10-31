@@ -9,22 +9,40 @@ module.exports = {
                 res.send(req.body)
             }).catch(err => res.send({ err: err.message }))
     },
+
     async getUser(req, res) {
-        /* 
-        To do: 
-        - Verificar como faz para pegar o query string (parâmetro de url).
-        - Buscar o cadastro no banco passando o id recuperado pela url.
-        */
-        const id = req.params.id
-        User.findById(id, (err, user) => {
-            if (err) {res.send({ err: err.message})}
-            else res.send(user)
+        const ObjectId = req.params.id
+        User.findById(ObjectId, (err, user) => {
+            console.log('Getting user ID: ', ObjectId)
+            if (err) { return res.send({ err: err.message }) }
+            else return res.send(user)
         });
     },
-    async getAllUser(req, res) {
-        /* 
-        To do: 
-        - Buscar todos no banco.
-        */
+
+    async getAllUsers(req, res) {
+        User.find({}, (err, users) => {
+            console.log('Getting all users...')
+            if (err) return res.send({ err: err.message })
+            else return res.send(users)
+        })
+    },
+
+    async editUser(req, res) {
+        const ObjectId = req.params.id
+        User.findByIdAndUpdate(ObjectId, req.body, (err, user) => {
+            console.log('Edited user ID:' + ObjectId + ' to: ' + user)
+            return res.send(req.body)
+        })
+    },
+
+    async deleteUser(req, res) {
+        const ObjectId = req.params.id
+        User.findByIdAndRemove(ObjectId, (err, user) => {
+            if (err) return res.send({ err: err.message })
+            else {
+                console.log('User ID: ' + ObjectId + ' was deleted...')
+                return res.send(user)
+            }
+        })
     }
 }
