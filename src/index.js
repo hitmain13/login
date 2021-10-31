@@ -2,7 +2,7 @@ const requireDir = require('require-dir');
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const routes = require('./routes');
+const routes = require('./routes/routes');
 
 requireDir("./models")
 
